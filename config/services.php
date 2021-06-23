@@ -30,4 +30,15 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'shopify' => [
+        'key' => env('SHOPIFY_API_KEY'),
+        'password' => env('SHOPIFY_API_PASS'),
+        'sign' => env('SHOPIFY_WEBHOOK_SIGN')
+    ],
+
+    'refersion' => [
+        'public' => env('REFERSION_PUBLIC_API_KEY'),
+        'secret' => env('REFERSION_SECRET_API_KEY')
+    ]
+
 ];
