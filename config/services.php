@@ -33,7 +33,8 @@ return [
     'shopify' => [
         'key' => env('SHOPIFY_API_KEY'),
         'password' => env('SHOPIFY_API_PASS'),
-        'sign' => env('SHOPIFY_WEBHOOK_SIGN')
+        'sign' => env('SHOPIFY_WEBHOOK_SIGN'),
+        'domain' => env('SHOPIFY_WEBHOOK_DOMAIN')
     ],
 
     'refersion' => [

@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Http;
 
 class WebhookService {
 
-    public function makeApiCall($request){
+    public function queueProductCreate($request){
 
         // $response = Http::withHeaders(['X-Shopify-Shop-Domain' => 'numa-dev.myshopify.com'])
         // ->withBasicAuth(config('services.shopify.key'), config('services.shopify.password'))
