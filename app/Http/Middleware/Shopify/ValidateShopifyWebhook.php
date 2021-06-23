@@ -29,7 +29,7 @@ class ValidateShopifyWebhook
         $signature = $request->header('x-shopify-hmac-sha256');
 
         if(!isset($signature)) {
-\            return response('Forbidden', 403);
+            return response('Forbidden', 403);
         }
         
         $hmac = base64_encode(hash_hmac('sha256', $request->getContent(), config('services.shopify.sign'), true));
