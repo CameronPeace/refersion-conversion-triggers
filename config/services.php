@@ -39,7 +39,8 @@ return [
 
     'refersion' => [
         'public' => env('REFERSION_PUBLIC_API_KEY'),
-        'secret' => env('REFERSION_SECRET_API_KEY')
+        'secret' => env('REFERSION_SECRET_API_KEY'),
+        'base' => env('REFERSION_API_BASE')
     ]
 
 ];
