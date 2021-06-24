@@ -78,6 +78,7 @@ return [
             'prefix' => env('SQS_PREFIX'),
             'queue' => env('SQS_CONVERSION_TRIGGER_QUEUE'),
             'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
+            'after_commit' => false,
         ],
 
     ],
