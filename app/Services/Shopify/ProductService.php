@@ -6,32 +6,42 @@ use App\Jobs\SendConversionTrigger;
 
 class ProductService
 {
-
-    const CONVERSION_TRIGGER_KEYWORD = 'rfsnadid';
-
+    /**
+     * 
+     * 
+     */
     public function queueProductCreate($product)
     {
-
+        //TODO rename these variables.
         //get variants
-        $productVariants = $product->variants;
-        // $productVariants = $product['variants'];
-        //parse variants and check out their sku's
+        $productVariants = $product['variants'];
 
         \Log::info($productVariants);
 
-        $queueableProducts = $this->filterVariantsBySkuKeyword($productVariants);
+        $queueableProducts = $this->filterProductVariantsBySkuKeyword(config('constants.keywords.rfsnadid'), $productVariants);
 
         if (!empty($queueableProducts)) {
             \Log::info($queueableProducts);
-            SendConversionTrigger::dispatch($queueableProducts)->onConnection('conversion-triggers');
+            
+            foreach($queueableProducts as $product ){
+                //TODO decide if we want to delete the delay (probably will)
+                SendConversionTrigger::dispatch($product)->onConnection('conversion-triggers')->delay(1);
+            }
         }
+
+        //TODO Decide what to do here if no job is created. 
     }
 
-    private function filterVariantsBySkuKeyword(array $productVariants)
+    /**
+     * 
+     * 
+     */
+    private function filterProductVariantsBySkuKeyword(string $keyword, array $productVariants)
     {
         return array_filter($productVariants, function ($variant) {
-            return strpos($variant->sku, self::CONVERSION_TRIGGER_KEYWORD);
+            return strpos($variant->sku, $keyword);
         });
     }
 
+    
 }
