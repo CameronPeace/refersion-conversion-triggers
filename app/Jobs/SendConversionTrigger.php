@@ -41,18 +41,18 @@ class SendConversionTrigger implements ShouldQueue
 
             $sku = $this->product['sku'];
 
-            //get affiliated code
             $code = app(AffiliateService::class)->parseAffiliateCodeFromShopifySku(config('constants.keywords.rfsnadid'), $sku);
 
-            //send api request to post new conversion trigger
             $response = $this->refersionApiClient->postNewConversionTrigger($code, $sku);
 
             //here we would figure out some logging solution
             \Log::info($response);
+
         } catch (InvalidRefersionApiKeysException $e) {
             $this->delete();
-        } catch (\Exception$e) {
+        } catch (\Exception $e) {
             //we don't know what happened, fail the job to give it another chance.
+            \Log::error(sprintf('Refersion conversion trigger job error: %s', $e->getMessage()));
             $this->fail($e);
         }
     }

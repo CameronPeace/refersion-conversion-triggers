@@ -2,8 +2,8 @@
 
 namespace App\Http\Clients\Refersion;
 
-use Illuminate\Support\Facades\Http;
 use App\Exceptions\InvalidRefersionApiKeysException;
+use Illuminate\Support\Facades\Http;
 
 class ApiClient
 {
@@ -36,7 +36,7 @@ class ApiClient
             'trigger' => $sku,
         ]);
 
-        if($response->status() == 401) {
+        if ($response->status() == 401) {
             throw new InvalidRefersionApiKeysException($response['error']);
         }
 

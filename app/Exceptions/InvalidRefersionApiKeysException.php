@@ -6,6 +6,12 @@ use Exception;
 
 class InvalidRefersionApiKeysException extends Exception
 {
+
+    public function __construct($message) {
+        parent::__construct($message);
+        $this->report();
+    }
+
     /**
      * Report or log an exception.
      *
