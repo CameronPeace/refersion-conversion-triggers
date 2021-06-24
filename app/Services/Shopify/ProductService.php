@@ -31,8 +31,6 @@ class ProductService
             \Log::info($queueableProducts);
 
             foreach ($queueableProducts as $product) {
-
-                //TODO decide if we want to delete the delay (probably will)
                 SendConversionTrigger::dispatch($product)->onConnection('conversion-triggers');
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Clients\Refersion;
 
 use Illuminate\Support\Facades\Http;
+use App\Exceptions\InvalidRefersionApiKeysException;
 
 class ApiClient
 {
@@ -23,30 +24,22 @@ class ApiClient
         $this->client = Http::withHeaders([self::REQUEST_HEADER_PUBLIC_KEY => $this->publicKey, self::REQUEST_HEADER_SECRET_KEY => $this->secretKey])->withOptions(['base_uri' => config('services.refersion.base')]);
     }
 
-    public function getAffiliateById()
-    {
-        $response =  $this->client->post('/get_affiliate',[
-            'affiliate_code' => 'e99'
-        ]);
-        
-        // $response =  $this->client->post('/list_affiliates',[
-        //     'limit' => '3'
-        // ]);
-        return $response->body();
-    }
-
     /**
-     * 
-     * 
+     *
+     *
      */
-    public function postNewConversionTrigger($affiliateCode, $sku) {
-        //TODO put a try-catch here
+    public function postNewConversionTrigger($affiliateCode, $sku)
+    {
         $response = $this->client->post('/new_affiliate_trigger', [
             'affiliate_code' => $affiliateCode,
             'type' => 'sku',
-            'trigger' => $sku
+            'trigger' => $sku,
         ]);
 
-        return $response->body();
+        if($response->status() == 401) {
+            throw new InvalidRefersionApiKeysException($response['error']);
+        }
+
+        return $response;
     }
 }

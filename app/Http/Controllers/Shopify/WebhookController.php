@@ -13,9 +13,13 @@ class WebhookController
      */
     public function productCreate(Request $request)
     {
+        //TODO possible validate & sanitization
 
+        //retrieving json data
         $content = json_decode($request->getContent(), true);
 
         $service = app(ProductService::class)->queueProductCreate($content);
+
+        return response('', 202);
     }
 }

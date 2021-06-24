@@ -2,6 +2,7 @@
 
 namespace App\Jobs;
 
+use App\Exceptions\InvalidRefersionApiKeysException;
 use App\Http\Clients\Refersion\ApiClient;
 use App\Services\AffiliateService;
 use Illuminate\Bus\Queueable;
@@ -26,7 +27,6 @@ class SendConversionTrigger implements ShouldQueue
     {
         //prod-abc-rfsnadid:e99
         $this->product = $product;
-
     }
 
     /**
@@ -37,10 +37,7 @@ class SendConversionTrigger implements ShouldQueue
     public function handle()
     {
         try {
-
             $this->refersionApiClient = new ApiClient();
-
-            \Log::info('Spinning in this bih');
 
             $sku = $this->product['sku'];
 
@@ -48,13 +45,15 @@ class SendConversionTrigger implements ShouldQueue
             $code = app(AffiliateService::class)->parseAffiliateCodeFromShopifySku(config('constants.keywords.rfsnadid'), $sku);
 
             //send api request to post new conversion trigger
-            $return = $this->refersionApiClient->postNewConversionTrigger($code, $sku);
+            $response = $this->refersionApiClient->postNewConversionTrigger($code, $sku);
 
-            //based on response end job
-            \Log::info($return);
+            //here we would figure out some logging solution
+            \Log::info($response);
+        } catch (InvalidRefersionApiKeysException $e) {
+            $this->delete();
         } catch (\Exception$e) {
-            \Log::error($e);
+            //we don't know what happened, fail the job to give it another chance.
+            $this->fail($e);
         }
-
     }
 }
