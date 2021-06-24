@@ -35,11 +35,18 @@ class RefersionApiClient
         return $response->body();
     }
 
-    public function postNewAffiliateTrigger() {
-        $response = $this->client->post('/new_affiliate_trigger'), [
-            'affiliate_code' => '',
+    /**
+     * 
+     * 
+     */
+    public function postNewConversionTrigger($affiliateCode, $sku) {
+        //TODO put a try-catch here
+        $response = $this->client->post('/new_affiliate_trigger', [
+            'affiliate_code' => $affiliateCode,
             'type' => 'sku',
-            'trigger' => ''
+            'trigger' => $sku
         ]);
+
+        return $response->body();
     }
 }
