@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Clients;
+namespace App\Http\Clients\Refersion;
 
 use Illuminate\Support\Facades\Http;
 
-class RefersionApiClient
+class ApiClient
 {
 
     public $publicKey;

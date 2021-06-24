@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Http\Clients\RefersionApiClient;
+use App\Http\Clients\Refersion\ApiClient;
 use App\Services\AffiliateService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -22,12 +22,10 @@ class SendConversionTrigger implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($product = ['sku' => 'prod-abc-rfsnadid:e99'])
+    public function __construct($product)
     {
-        //TODO remove the object cast. It won't be needed past testing. 
-        $this->product = (object) $product;
-
-        $this->refersionApiClient = new RefersionApiClient();
+        //prod-abc-rfsnadid:e99
+        $this->product = $product;
 
     }
 
@@ -38,17 +36,25 @@ class SendConversionTrigger implements ShouldQueue
      */
     public function handle()
     {
-        \Log::info('Spinning in this bih');
+        try {
 
-        //get affiliated ID
-        $code = app(AffiliateService::class)->parseAffiliateCodeFromShopifySku(config('constants.keywords.rfsnadid'), $this->product->sku);
+            $this->refersionApiClient = new ApiClient();
 
-        \Log::info($code);
+            \Log::info('Spinning in this bih');
 
-        //send api request to post new conversion trigger
-        $return = $this->refersionApiClient->postNewConversionTrigger($code, $this->product->sku);
+            $sku = $this->product['sku'];
 
-        //based on response end job
-        \Log::info($return);
+            //get affiliated code
+            $code = app(AffiliateService::class)->parseAffiliateCodeFromShopifySku(config('constants.keywords.rfsnadid'), $sku);
+
+            //send api request to post new conversion trigger
+            $return = $this->refersionApiClient->postNewConversionTrigger($code, $sku);
+
+            //based on response end job
+            \Log::info($return);
+        } catch (\Exception$e) {
+            \Log::error($e);
+        }
+
     }
 }
