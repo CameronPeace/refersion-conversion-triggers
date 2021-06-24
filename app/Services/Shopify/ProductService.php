@@ -10,12 +10,8 @@ class ProductService
      *
      *
      */
-    public function queueProductCreate($product, $keyword = null)
+    public function queueProductCreateToConversionTriggers($product, $keyword = null)
     {
-        //TODO rename these variables.
-        //TODO decide is making the keyword optional was a good idea
-        //TODO decide is class name is accurate.
-
         if (empty($keyword)) {
             $keyword = config('constants.keywords.rfsnadid');
         }
@@ -23,19 +19,19 @@ class ProductService
         //get variants
         $productVariants = $product['variants'];
 
-        \Log::info($productVariants);
-
         $queueableProducts = $this->filterProductVariantsBySkuKeyword($productVariants, $keyword);
 
         if (!empty($queueableProducts)) {
-            \Log::info($queueableProducts);
 
             foreach ($queueableProducts as $product) {
                 SendConversionTrigger::dispatch($product)->onConnection('conversion-triggers');
             }
-        }
 
-        //TODO Decide what to do here if no job is created.
+            \Log::info('Shopify product webhook: Conversion trigger jobs queued.');
+
+        } else {
+            \Log::info('Shopify product webhook: No conversion trigger jobs created.');
+        }
     }
 
     /**
