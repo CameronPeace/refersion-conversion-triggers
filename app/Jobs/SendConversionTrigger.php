@@ -44,7 +44,7 @@ class SendConversionTrigger implements ShouldQueue
 
             $response = $this->refersionApiClient->postNewConversionTrigger($code, $sku);
 
-            //here we would figure out some logging solution
+            //here we would add out some logging solution for the jobs
             \Log::info($response);
 
         } catch (InvalidRefersionApiKeysException $e) {

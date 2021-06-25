@@ -16,6 +16,8 @@ class WebhookController
     {
         //TODO possible validate & sanitization
         try {
+
+            \Log::info('Data incoming from Shopify ProductCreate Webhook');
             //retrieving json data
             $content = json_decode($request->getContent(), true);
 
