@@ -8,8 +8,9 @@ use Illuminate\Http\Request;
 class WebhookController
 {
     /**
-     * 
-     * 
+     * Opening for Shopify's ProductCreate webhook
+     * @param request $request
+     * @return response
      */
     public function productCreate(Request $request)
     {

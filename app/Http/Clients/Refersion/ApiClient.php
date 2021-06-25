@@ -25,10 +25,13 @@ class ApiClient
     }
 
     /**
-     *
-     *
+     * Makes a post request to the refersion api that
+     * creates a conversion trigger for an affiliate
+     * @param string $affiliateCode
+     * @param string $sku
+     * @return response $response
      */
-    public function postNewConversionTrigger($affiliateCode, $sku)
+    public function postNewConversionTrigger(string $affiliateCode, string $sku)
     {
         $response = $this->client->post('/new_affiliate_trigger', [
             'affiliate_code' => $affiliateCode,

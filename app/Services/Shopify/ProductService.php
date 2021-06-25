@@ -7,10 +7,14 @@ use App\Jobs\SendConversionTrigger;
 class ProductService
 {
     /**
-     *
-     *
+     * Takes an array of products and creates
+     * jobs that send conversion triggers for each products sku to
+     * refersions api
+     * @param array $product
+     * @param string|null $keyword
+     * @return void
      */
-    public function queueProductCreateToConversionTriggers($product, $keyword = null)
+    public function queueProductCreateToConversionTriggers(array $product, string $keyword = null)
     {
         if (empty($keyword)) {
             $keyword = config('constants.keywords.rfsnadid');
@@ -27,16 +31,20 @@ class ProductService
                 SendConversionTrigger::dispatch($product)->onConnection('conversion-triggers');
             }
 
-            \Log::info('Shopify product webhook: Conversion trigger jobs queued.');
+            \Log::info('Shopify ProductCreate webhook: Conversion trigger jobs queued.');
 
         } else {
-            \Log::info('Shopify product webhook: No conversion trigger jobs created.');
+            \Log::info('Shopify ProductCreate webhook: No conversion trigger jobs created.');
         }
     }
 
     /**
+     * Iterates through an array of product variants and returns all products that have
+     * sku's matching a keyword
+     * @param array $productVariants
+     * @param string $keyword
      *
-     *
+     * @return array
      */
     private function filterProductVariantsBySkuKeyword(array $productVariants, string $keyword)
     {

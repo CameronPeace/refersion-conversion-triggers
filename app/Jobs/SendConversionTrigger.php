@@ -25,7 +25,6 @@ class SendConversionTrigger implements ShouldQueue
      */
     public function __construct($product)
     {
-        //prod-abc-rfsnadid:e99
         $this->product = $product;
     }
 
