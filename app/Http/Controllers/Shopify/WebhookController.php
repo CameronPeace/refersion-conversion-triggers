@@ -14,7 +14,6 @@ class WebhookController
      */
     public function productCreate(Request $request)
     {
-        //TODO possible validate & sanitization
         try {
 
             \Log::info('Data incoming from Shopify ProductCreate Webhook');
