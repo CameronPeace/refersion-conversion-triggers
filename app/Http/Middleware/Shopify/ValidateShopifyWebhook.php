@@ -21,11 +21,6 @@ class ValidateShopifyWebhook
             return response('Forbidden: Invalid domain', 403);
         }
 
-        // if(!$request->secure()) {
-        //       //we won't be redirecting. TODO
-        //     return redirect()->secure($request->getRequestUri());
-        // }
-
         $signature = $request->header('x-shopify-hmac-sha256');
 
         if(!isset($signature)) {

@@ -15,12 +15,18 @@ class WebhookController
     public function productCreate(Request $request)
     {
         //TODO possible validate & sanitization
+        try {
+            //retrieving json data
+            $content = json_decode($request->getContent(), true);
 
-        //retrieving json data
-        $content = json_decode($request->getContent(), true);
+            $service = app(ProductService::class)->queueProductCreateConversionTriggers($content);
 
-        $service = app(ProductService::class)->queueProductCreateToConversionTriggers($content);
+            return response('', 202);
+        } catch (\Exception $e) {
+            \Log::error(sprintf('Could not process data from Shopify ProductCreate webhook => %s', $e->getMessage()));
 
-        return response('', 202);
+            return response('Error occurred', 500);
+        }
+
     }
 }

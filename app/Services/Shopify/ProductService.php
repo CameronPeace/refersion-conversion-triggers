@@ -14,7 +14,7 @@ class ProductService
      * @param string|null $keyword
      * @return void
      */
-    public function queueProductCreateToConversionTriggers(array $product, string $keyword = null)
+    public function queueProductCreateConversionTriggers(array $product, string $keyword = null)
     {
         if (empty($keyword)) {
             $keyword = config('constants.keywords.rfsnadid');
@@ -39,8 +39,8 @@ class ProductService
     }
 
     /**
-     * Iterates through an array of product variants and returns all products that have
-     * sku's matching a keyword
+     * Iterates through an array of product variants and returns all variants that have
+     * sku's containing a specific keyword
      * @param array $productVariants
      * @param string $keyword
      *
