@@ -20,7 +20,7 @@ class WebhookController
             //retrieving json data
             $content = json_decode($request->getContent(), true);
 
-            $service = app(ProductService::class)->queueProductCreateConversionTriggers($content);
+            app(ProductService::class)->queueProductCreateConversionTriggers($content);
 
             return response('', 202);
         } catch (\Exception $e) {
