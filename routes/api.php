@@ -18,5 +18,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('shopifyValidWebhook')->post('/shopify/webhook/product/create', [App\Http\Controllers\Shopify\WebhookController::class, 'productCreate']);
+Route::middleware('shopifyValidWebhook','shopifyProductsCreate')->post('/shopify/webhook/products/create', [App\Http\Controllers\Shopify\WebhookController::class, 'productsCreate']);
 

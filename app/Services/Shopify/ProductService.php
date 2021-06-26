@@ -14,7 +14,7 @@ class ProductService
      * @param string|null $keyword
      * @return void
      */
-    public function queueProductCreateConversionTriggers(array $product, string $keyword = null)
+    public function queueProductsCreateConversionTriggers(array $product, string $keyword = null)
     {
         if (empty($keyword)) {
             $keyword = config('constants.keywords.rfsnadid');
@@ -31,10 +31,10 @@ class ProductService
                 SendConversionTrigger::dispatch($product)->onConnection('conversion-triggers');
             }
 
-            \Log::info('Shopify ProductCreate webhook: Conversion trigger jobs queued.');
+            \Log::info('Shopify ProductsCreate webhook: Conversion trigger jobs queued.');
 
         } else {
-            \Log::info('Shopify ProductCreate webhook: No conversion trigger jobs created.');
+            \Log::info('Shopify ProductsCreate webhook: No conversion trigger jobs created.');
         }
     }
 
